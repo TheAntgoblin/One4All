@@ -1,0 +1,32 @@
+<button onclick="setOpen(1)">Open Page 1</button>
+<button onclick="setOpen(2)">Open Page 2</button>
+<button onclick="setOpen(3)">Open Page 3</button>
+<button onclick="setOpen(4)">Open Page 4</button>
+<button onclick="setOpen(5)">Open Page 5</button>
+<button onclick="setOpen(6)">Open Page 6</button>
+<button onclick="setOpen(7)">Open Page 7</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEnNn3hthsR89evC_MHn6knpqm55J96uI",
+    authDomain: "all4one-1ca59.firebaseapp.com",
+    databaseURL: "https://all4one-1ca59-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "all4one-1ca59",
+    storageBucket: "all4one-1ca59.appspot.com",
+    messagingSenderId: "736453021564",
+    appId: "1:736453021564:web:889e2b3eb8f752309c9ef9",
+    measurementId: "G-Y6CZCQSC8W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function setOpen(n) {
+    set(ref(db, "openPage"), n);
+    alert("Open page set to " + n);
+  }
+  window.setOpen = setOpen;
+</script>

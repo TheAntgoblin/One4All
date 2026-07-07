@@ -1,0 +1,36 @@
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEnNn3hthsR89evC_MHn6knpqm55J96uI",
+    authDomain: "all4one-1ca59.firebaseapp.com",
+    databaseURL: "https://all4one-1ca59-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "all4one-1ca59",
+    storageBucket: "all4one-1ca59.appspot.com",
+    messagingSenderId: "736453021564",
+    appId: "1:736453021564:web:889e2b3eb8f752309c9ef9",
+    measurementId: "G-Y6CZCQSC8W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const pageRef = ref(db, "openPage");
+
+  get(pageRef).then(snapshot => {
+    let page = snapshot.val() || 1;
+
+    // Calculate next page
+    let nextPage = page + 1;
+    if (nextPage > 7) nextPage = 1;
+
+    // Save next page FIRST
+    set(pageRef, nextPage).then(() => {
+      // Redirect AFTER saving
+      window.location.href = `pages/page${page}.html`;
+    });
+  });
+</script>
+
+<!-- https://all4one-1ca59-default-rtdb.europe-west1.firebasedatabase.app -->
