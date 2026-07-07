@@ -1,1 +1,118 @@
-<h1>Page 6</h1>
+<style>
+    body {
+        background-color: rgb(203, 195, 227);
+    }
+
+    .stack {
+        position: relative;
+        width: 100%;
+        height: 50vh;
+        /* full screen */
+    }
+
+    .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60vw;
+        max-width: 400px;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    /* 4x4 grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        width: 80vw;
+        max-width: 400px;
+        margin: 20px auto;
+    }
+
+    /* Buttons */
+    .grid button {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        /* perfect squares */
+        background: #333;
+        border: none;
+        border-radius: 10px;
+        transition: background 0.2s;
+    }
+
+    /* Lit up */
+    .grid button.active {
+        background: #ffffff;
+    }
+</style>
+
+<div class="stack">
+    <img src="Images/Table.png" class="logo">
+    <img src="Images/Swords.png" class="logo">
+</div>
+
+<div class="grid">
+    <!-- 16 buttons -->
+    <button data-id="1"></button>
+    <button data-id="2"></button>
+    <button data-id="3"></button>
+    <button data-id="4"></button>
+
+    <button data-id="5"></button>
+    <button data-id="6"></button>
+    <button data-id="7"></button>
+    <button data-id="8"></button>
+
+    <button data-id="9"></button>
+    <button data-id="10"></button>
+    <button data-id="11"></button>
+    <button data-id="12"></button>
+
+    <button data-id="13"></button>
+    <button data-id="14"></button>
+    <button data-id="15"></button>
+    <button data-id="16"></button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBEnNn3hthsR89evC_MHn6knpqm55J96uI",
+    authDomain: "all4one-1ca59.firebaseapp.com",
+    databaseURL: "https://all4one-1ca59-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "all4one-1ca59",
+    storageBucket: "all4one-1ca59.appspot.com",
+    messagingSenderId: "736453021564",
+    appId: "1:736453021564:web:889e2b3eb8f752309c9ef9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// The correct sequence
+const correctSequence = [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let userSequence = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+document.querySelectorAll(".grid button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.id);
+
+        if (userSequence[id] == 0) {
+            btn.classList.add("active");
+            userSequence[id] = 1;
+        } else {
+            btn.classList.remove("active");
+            userSequence[id] = 0;
+        }
+        
+
+        // Full correct sequence
+        if (userSequence == correctSequence) {
+            set(ref(db, "sword1"), true);
+        }
+    });
+});
+</script>
