@@ -1,6 +1,6 @@
 <style>
     body {
-        background-color: rgb(255, 179, 186);
+        background-color: rgb(186, 255, 255);
     }
 
     .toptext {
@@ -21,7 +21,7 @@
 
     .logo {
         position: absolute;
-        top: 25%;
+        top: 50%;
         left: 50%;
         width: 60vw;
         max-width: 400px;
@@ -60,21 +60,71 @@
         top: 42%;
         transform: translateX(-50%);
         border: 4px solid rgb(0, 0, 0);
-        background-color: aqua;
+        background-color: rgb(186, 255, 201);
         padding: 10px;
         border-radius: 10px;
 
     }
+
+    .sword1 {
+        display: none;
+    }
+    .sword2 {
+        display: none;
+    }
+    .sword3 {
+        display: none;
+    }
+    .sword4 {
+        display: none;
+    }
+    .sword5 {
+        display: none;
+    }
+    .sword6 {
+        display: none;
+    }
+    .sword7 {
+        display: none;
+    }
+    .white {
+        display: none;
+        z-index: 999;
+    }
+
+    .giant-letter {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10vw;
+        /* giant */
+        font-weight: bold;
+        color: black;
+        /* or white, or gold */
+        pointer-events: none;
+        /* so clicks pass through */
+        z-index: 999;
+        /* above everything */
+        display: none;
+    }
 </style>
-
 <div class="toptext">"All for one, and one for all"</div>
-
 <div class="stack">
     <img src="Images/Table.png" class="logo">
-    <img src="Images/Swords.png" class="logo">
+    <img src="Images/swords.png" class="logo">
+    <img src="Images/sword1.png" class="logo sword1">
+    <img src="Images/sword2.png" class="logo sword2">
+    <img src="Images/sword3.png" class="logo sword3">
+    <img src="Images/sword4.png" class="logo sword4">
+    <img src="Images/sword5.png" class="logo sword5">
+    <img src="Images/sword6.png" class="logo sword6">
+    <img src="Images/sword7.png" class="logo sword7">
+    <img src="Images/whiteTable.png" class="logo white">
+    <div class="giant-letter" data-letter="letter5"></div>
 </div>
 
-<img src="Images/p1.jpg" class="hint">
+<img src="Images/p5.jpg" class="hint">
 
 <div class="grid">
     <!-- 16 buttons -->
@@ -117,7 +167,7 @@
     const db = getDatabase(app);
 
     // The correct sequence
-    const correctSequence = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const correctSequence = [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0];
     let userSequence = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     document.querySelectorAll(".grid button").forEach(btn => {
@@ -134,9 +184,12 @@
 
 
             // Full correct sequence
-            if (userSequence == correctSequence) {
-                set(ref(db, "sword1"), true);
+            if (userSequence.every((val, i) => val === correctSequence[i])) {
+                set(ref(db, "solved5"), true);
+            } else {
+                set(ref(db, "solved5"), false);
             }
         });
     });
 </script>
+<script type="module" src="global.js"></script>

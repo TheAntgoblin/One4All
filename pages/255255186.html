@@ -1,0 +1,195 @@
+<style>
+    body {
+        background-color: rgb(255, 255, 186);
+    }
+
+    .toptext {
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #000;
+        font-style: italic;
+    }  
+
+    .stack {
+        position: relative;
+        width: 100%;
+        height: 50vh;
+        /* full screen */
+    }
+
+    .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60vw;
+        max-width: 400px;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    /* 4x4 grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        width: 80vw;
+        max-width: 400px;
+        margin: 20px auto;
+    }
+
+    /* Buttons */
+    .grid button {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        /* perfect squares */
+        background: #333;
+        border: none;
+        border-radius: 10px;
+    }
+
+    /* Lit up */
+    .grid button.active {
+        background: #ffffff;
+    }
+
+    .hint {
+        position: absolute;
+        left: 50%;
+        top: 42%;
+        transform: translateX(-50%);
+        border: 4px solid rgb(0, 0, 0);
+        background-color: rgb(255, 223, 186);
+        padding: 10px;
+        border-radius: 10px;
+
+    }
+
+    .sword1 {
+        display: none;
+    }
+    .sword2 {
+        display: none;
+    }
+    .sword3 {
+        display: none;
+    }
+    .sword4 {
+        display: none;
+    }
+    .sword5 {
+        display: none;
+    }
+    .sword6 {
+        display: none;
+    }
+    .sword7 {
+        display: none;
+    }
+    .white {
+        display: none;
+        z-index: 999;
+    }
+
+    .giant-letter {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10vw;
+        /* giant */
+        font-weight: bold;
+        color: black;
+        /* or white, or gold */
+        pointer-events: none;
+        /* so clicks pass through */
+        z-index: 999;
+        /* above everything */
+        display: none;
+    }
+</style>
+<div class="toptext">"All for one, and one for all"</div>
+<div class="stack">
+    <img src="Images/Table.png" class="logo">
+    <img src="Images/swords.png" class="logo">
+    <img src="Images/sword1.png" class="logo sword1">
+    <img src="Images/sword2.png" class="logo sword2">
+    <img src="Images/sword3.png" class="logo sword3">
+    <img src="Images/sword4.png" class="logo sword4">
+    <img src="Images/sword5.png" class="logo sword5">
+    <img src="Images/sword6.png" class="logo sword6">
+    <img src="Images/sword7.png" class="logo sword7">
+    <img src="Images/whiteTable.png" class="logo white">
+    <div class="giant-letter" data-letter="letter3"></div>
+</div>
+
+<img src="Images/p3.jpg" class="hint">
+
+<div class="grid">
+    <!-- 16 buttons -->
+    <button data-id="0"></button>
+    <button data-id="1"></button>
+    <button data-id="2"></button>
+    <button data-id="3"></button>
+    
+    <button data-id="4"></button>
+    <button data-id="5"></button>
+    <button data-id="6"></button>
+    <button data-id="7"></button>
+    
+    <button data-id="8"></button>
+    <button data-id="9"></button>
+    <button data-id="10"></button>
+    <button data-id="11"></button>
+    
+    <button data-id="12"></button>
+    <button data-id="13"></button>
+    <button data-id="14"></button>
+    <button data-id="15"></button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBEnNn3hthsR89evC_MHn6knpqm55J96uI",
+    authDomain: "all4one-1ca59.firebaseapp.com",
+    databaseURL: "https://all4one-1ca59-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "all4one-1ca59",
+    storageBucket: "all4one-1ca59.appspot.com",
+    messagingSenderId: "736453021564",
+    appId: "1:736453021564:web:889e2b3eb8f752309c9ef9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// The correct sequence
+const correctSequence = [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0];
+let userSequence = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+document.querySelectorAll(".grid button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.id);
+
+        if (userSequence[id] == 0) {
+            btn.classList.add("active");
+            userSequence[id] = 1;
+        } else {
+            btn.classList.remove("active");
+            userSequence[id] = 0;
+        }
+        
+
+        // Full correct sequence
+        if (userSequence.every((val, i) => val === correctSequence[i])) {
+            set(ref(db, "solved3"), true);
+        } else {
+            set(ref(db, "solved3"), false);
+        }
+    });
+});
+</script>
+<script type="module" src="global.js"></script>

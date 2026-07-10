@@ -28,7 +28,13 @@
     // Save next page FIRST
     set(pageRef, nextPage).then(() => {
       // Redirect AFTER saving
-      window.location.href = `pages/page${page}.html`;
+      let variable = "page"+page;
+      console.log(variable)
+      const number = ref(db, variable);
+      get(number).then(snapshot => {
+        let pageNumber = snapshot.val();
+        window.location.href = `pages/${pageNumber}.html`;
+      });
     });
   });
 </script>
